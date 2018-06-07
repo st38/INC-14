@@ -45,30 +45,29 @@
 
 ### Create two Docker instances
 
- 1. Provide AWS credentials:
+ 1. Provide AWS credentials and region:
 	```bash
 	export AWS_ACCESS_KEY_ID=access key
 	export AWS_SECRET_ACCESS_KEY=secret access key
+	export AWS_DEFAULT_REGION="eu-central-1"
+	export AWS_INSTANCE_TYPE="t2.micro"
 	```
 
  2. Create Docker instances:
 	```bash
-	REGION="eu-central-1"
 	SWARM_MANAGER_NAME="Swarm-Manager"
 	SWARM_NODE_NAME="Swarm-Node"
-	INSTANCE_TYPE="t2.micro"
-	DOCKER_PORT="2376"
 	SWARM_PORT="2377"
 	NODES_PORT="7946"
 	OVERLAY_PORT="4789"
 	
 	
 	# Create Swarm Manager
-	docker-machine create --driver amazonec2 --amazonec2-region "$REGION" --amazonec2-instance-type "$INSTANCE_TYPE" "$SWARM_MANAGER_NAME"
+	docker-machine create --driver amazonec2 --amazonec2-open-port "$SWARM_PORT" --amazonec2-open-port "$NODES_PORT" --amazonec2-open-port "$NODES_PORT"/udp --amazonec2-open-port "$OVERLAY_PORT"/udp "$SWARM_MANAGER_NAME"
 	
 	
 	# Create Swarm Node
-	docker-machine create --driver amazonec2 --amazonec2-region "$REGION" --amazonec2-instance-type "$INSTANCE_TYPE" --amazonec2-open-port "$SWARM_PORT" --amazonec2-open-port "$NODES_PORT" --amazonec2-open-port "$NODES_PORT"/udp --amazonec2-open-port "$OVERLAY_PORT"/udp "$SWARM_NODE_NAME"
+	docker-machine create --driver amazonec2 "$SWARM_NODE_NAME"
 	```
 
 
@@ -125,4 +124,3 @@
 ## Known issues
 
  1. Sometimes, docker-machine may fail to create a docker instance on AWS. In such cases failed instance should be removed and then recreated. For removing, please see [Clean envorinment](#clean-envorinment).
- 2. When docker-machine creates an instance and we specify the ports for security group [it may fail if we open ports twice](https://blog.berkgokden.com/creating-docker-engine-swarm-mode-cluster-in-amazon-ec2-with-docker-machine-docker-aws-8b46cf1e12a5).
