@@ -107,4 +107,4 @@
 
 ## Known issues
 
- 1. Sometimes, docker-machine may fail to create a docker instance on AWS. In such cases failed instance should be removed and then recreated. For removing, please see [Clean envorinment](#clean-envorinment).
+ 1. Sometimes, docker-machine may fail to create a docker instance on AWS. In such cases failed instance should be removed and then recreated. For removing, please see [Remove environment](#remove-environment).
