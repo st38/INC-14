@@ -55,6 +55,7 @@
 
  2. Create Docker instances:
 	```bash
+	# Define nodes names
 	SWARM_MANAGER_NAME="Swarm-Manager"
 	SWARM_NODE_NAME="Swarm-Node"
 	
@@ -68,33 +69,22 @@
 	```
 
 
-### Configure first instance as Docker Swarm manager
-
- 1. Run the following commands:
+ 3. Configure first instance as Docker Swarm manager:
 	```bash
-	# Make connection to the Swarm manager as active
-	eval $(docker-machine env "$SWARM_MANAGER_NAME")
-	
 	# Get Swarm manager IP
 	SWARM_MANAGER_IP="$(docker-machine ssh "$SWARM_MANAGER_NAME" curl http://169.254.169.254/latest/meta-data/local-ipv4)"
 	
 	# Initialize cluster manager
-	docker swarm init --advertise-addr "$SWARM_MANAGER_IP"
+	docker-machine ssh "$SWARM_MANAGER_NAME" sudo docker swarm init --advertise-addr "$SWARM_MANAGER_IP"
 	
 	# Get Swarm cluster token
-	TOKEN="$(docker swarm join-token worker --quiet)"
+	TOKEN="$(docker-machine ssh "$SWARM_MANAGER_NAME" sudo docker swarm join-token worker --quiet)"
 	```
 
-
-### Configure second instance as Docker Swarm cluster nodes
-
- 1. Run the following commands:
+ 4. Configure second instance as Docker Swarm cluster nodes:
 	```bash
-	# Make connection to the Swarm node as active
-	eval $(docker-machine env "$SWARM_NODE_NAME")
-	
 	# Add node to the cluser using output from the step above
-	docker swarm join --token "$TOKEN" "$SWARM_MANAGER_IP":2377
+	docker-machine ssh "$SWARM_NODE_NAME" sudo docker swarm join --token "$TOKEN" "$SWARM_MANAGER_IP":2377
 	```
 
 
@@ -102,11 +92,8 @@
 
  1. Run the following command:
 	```bash
-	# Make connection to the Swarm manager as active
-	eval $(docker-machine env "$SWARM_MANAGER_NAME")
-	
-	# View swarm nodes
-	docker node ls
+	# View swarm cluster nodes
+	docker-machine ssh "$SWARM_MANAGER_NAME" sudo docker node ls
 	```
 
 
