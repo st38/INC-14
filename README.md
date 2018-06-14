@@ -22,7 +22,7 @@
 
 ## Requirements
 
- 1. A Linux host with Docker Machine installed.
+ 1. Linux host with [Docker Machine installed](https://docs.docker.com/machine/install-machine/).
  2. AWS account with AmazonEC2FullAccess permissions.
 
 
@@ -57,13 +57,10 @@
 	```bash
 	SWARM_MANAGER_NAME="Swarm-Manager"
 	SWARM_NODE_NAME="Swarm-Node"
-	SWARM_PORT="2377"
-	NODES_PORT="7946"
-	OVERLAY_PORT="4789"
 	
 	
 	# Create Swarm Manager
-	docker-machine create --driver amazonec2 --amazonec2-open-port "$SWARM_PORT" --amazonec2-open-port "$NODES_PORT" --amazonec2-open-port "$NODES_PORT"/udp --amazonec2-open-port "$OVERLAY_PORT"/udp "$SWARM_MANAGER_NAME"
+	docker-machine create --driver amazonec2 --amazonec2-open-port "2377" --amazonec2-open-port "7946" --amazonec2-open-port "7946"/udp "$SWARM_MANAGER_NAME"
 	
 	
 	# Create Swarm Node
