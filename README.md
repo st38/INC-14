@@ -6,8 +6,9 @@
  4. [Duration](#duration)
  5. [General plan](#general-plan)
  6. [Usage](#usage)
- 7. [Clean envorinment](#clean-envorinment)
- 8. [Known issues](#known-issues)
+ 7. [Verification](#verification)
+ 8. [Remove environment](#remove-environment)
+ 9. [Known issues](#known-issues)
 
 
 ## Goals
@@ -88,16 +89,15 @@
 	```
 
 
-### Verify cluster status
+## Verification
 
- 1. Run the following command:
+ 1. View swarm cluster nodes:
 	```bash
-	# View swarm cluster nodes
 	docker-machine ssh "$SWARM_MANAGER_NAME" sudo docker node ls
 	```
 
 
-## Clean envorinment
+## Remove environment
 
  1. Remove Docker Swarm manager and node instances:
 	```bash
